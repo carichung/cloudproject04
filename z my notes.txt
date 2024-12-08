@@ -1,0 +1,112 @@
+AWS Project–Building a React App with Amplify (Gen 1), Cognito, and CI/CD with GitHub | AWS Tutorial
+https://www.youtube.com/watch?v=ma1FA2be8Ac&list=PLwyXYwu8kL0wMalR9iXJIPfiMYWNFWQzx&index=3
+
+
+			prepare environment -->  create React app --> push to Amplify --> create Cognito --> install Amplify library --> run the App --> add function to the quiz --> 
+
+			push vs code to GitHub --> hook Amplify to grab code from GitHub --> create role
+
+
+**I am not able to use nodejs and npm in my vs code at the first place, finally find that the terminal use powershell cause the problem, use command prompt is ok**
+
+---------------------------------------------------------------
+
+1) prepare enviornment: 
+				node.js + aws amplify cli
+								> npm install -g @aws-amplify/cli
+								> amplify configure
+												IAM --> create user --> create access key
+								
+2) create React app:
+				> npx create-react-app cloudproject03
+							**if you occur error in npm, use > npm install --legacy-peerpdeps
+				> cd .\cloudprojetct03\
+				> amplify init
+				
+				goto AWS conosle, in Amplify, the cloudproject03 should be created (in this stage it is still a empty container without authenication, api, database etc)
+				
+3) create Cognito:
+				> amplify add auth
+									Q1-use default authenication?
+									- Default configuration (=cognito)
+									- Default configuration with social provider (=facebook or google)
+									- Manual configuration 
+									
+									Q2-how to sign in?
+									- Email
+				
+				> amplify push (push all config to aws)
+				
+		3.1 	goto AWS cognito, you will find the "cloudproject03" was created
+				click the project name, at the left panel, click "user", we will create a user later
+		
+		3.2 	copy code for "App.js" file
+				
+		3.3	install "amplify library" to give use the user login interface: 
+				> npm install aws-amplify @aws-amplify/ui-react
+							**if any error, use > npm install aws-amplify @aws-amplify/ui-react --legacy-peer-deps
+							
+		3.4	run the app
+				> npm start (this will open a browser will user log-in page)
+				
+				create a account with real e-mail address
+
+		3.5	goback to Cognito user, you will find a user information was added 
+		
+		
+4) add function and styling for the quiz:
+
+		in vs code, add 2 file under "src" folder, name - Quiz.js & quizData.js, copy the code from github and make some code adjustment
+		once done, save file, and you will find the user login page is updated, there are questions now.
+		
+5) push vs code to GitHub: 
+
+		goto github and create a repository
+		goto vs code, input below in terminal:
+						
+						https://github.com/carichung/CloudProject03-aws_cognito_amplify_reactapp
+						
+						> git init
+						> git add .
+						> git commit -m "Initial commit"
+										**if author unknown error occur, input your github user name and e-mail for vs code linkup to your github, instruction is given
+											> git config --global --list (= to check the user info you just input)
+						> git branch -M main
+						> git remote add origin https://github.com/carichung/CloudProject03-aws_cognito_amplify_reactapp.git
+						> git push -u origin main
+										**if there are error, use > git push  --force origin main
+										
+		goto Github, you should find the vs code coding is in your repository now
+		
+		
+6) hook up with Amplify and setup CI/CD:
+
+				goto aws Amplify, in "Hosting environments",  choose "GitHub" (=this is just asking where are your frontend file?)
+				in "recently updated repository", if you cannot find your repository, this maybe a permission problem, click "View GitHub permission" and you will redirect to GitHub,
+				in "repository access", choose "only select repository"  and select the repository you want to link up with Amplify
+				now go back to Amplify, you should able to choose the repository.
+				
+				for "Branch" choose "main"
+				in "build setting" , choose the backend environment to use this branch
+				enable the "full stack CI/CD"
+				
+				create new role:
+						choose "AWS service", other options keep as default, click "create role"
+						select the role you just create
+				
+				review all details, click "save and deploy"
+				
+				the process should be success.
+				
+				open the link Amplify provide, you should able to log-in and play the quiz
+
+---------------------------------------------------------------------
+
+		How to delete Amplify project?
+		
+					selete the project you want to delete, in the left panel, "App settings" -->  "general setting" , you will find the delete button inside
+					
+					
+									
+				
+				
